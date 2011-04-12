@@ -31,13 +31,14 @@ if row
   end
   
   message.to = destination
-  message.reply_to = "#{name_from_email(address_from)}-#{address_to}"
+  message.reply_to = "\"#{name_from_email(address_from)}\"-#{address_to}"
   message.deliver
 else
-  to_name, key = name_from_email(address_from).split("-")
+  output_address, key = address_to.split("-")
   puts [to_name, key].join(",")
-  if row = db.get_first_row("select destination from addresses where address = ?", [key])
-    message.to = "#{to_name}@#{row[0]}"
+  if row = db.get_first_row("select * from addresses where address = ? and destination = ?",
+                            [key, address_from])
+    message.to = output_address.gsub("\"", '')
     message.from = "#{key}@#{domain_from_email(address_to)}"
     puts message.to_s
     message.deliver
