@@ -31,7 +31,7 @@ if row
   end
   
   message.to = destination
-  message.reply_to = "\"#{name_from_email(address_from)}\"-#{address_to}"
+  message.reply_to = "\"#{address_from}\"-#{address_to}"
   message.deliver
 else
   output_address, key = address_to.split("-")
