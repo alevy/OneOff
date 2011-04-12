@@ -11,7 +11,7 @@ def name_from_email(address)
 end
 
 def domain_from_email(address)
-  address.split("@").last.split('.')[-2..-1].join('.')
+  address.split("@").last
 end
 
 message = Mail.new(STDIN.read)
@@ -31,11 +31,14 @@ if row
   end
   
   message.to = destination
-  message.reply_to = address_to
+  message.reply_to = "#{address_to_name(address_from)}-#{address_to}"
   message.deliver
-elsif row = db.get_first_row("select destination, origin from addresses where address = ?", [address_from])
-  
+else
+  key, to_name = name_from_email(address_from).split("-")
+  if row = db.get_first_row("select destination from addresses where address = ?", [key])
+    message.to = "#{to_name}@#{row[0]}"
+    message.from = "#{key}@#{domain_from_email(address_to)}"
+    message.deliver
+  end
 end
-
-
 

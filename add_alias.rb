@@ -9,7 +9,7 @@ def name_from_email(address)
 end
 
 def domain_from_email(address)
-  address.split("@").last.split('.')[-2..-1].join('.')
+  address.split("@").last
 end
 
 db = SQLite3::Database.new(File.join(File.dirname(__FILE__), "addresses.db"))
