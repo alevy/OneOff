@@ -34,12 +34,13 @@ if row
   message.reply_to = "#{address_from.gsub('@', '#')}-#{address_to}"
   message.deliver
 else
-  output_address, key = address_to.split("-")
+  output_address, full_address = address_to.split("-")
+  key = name_from_email(full_address)
   puts [output_address, key].join(",")
   if row = db.get_first_row("select * from addresses where address = ? and destination = ?",
                             [key, address_from])
     message.to = output_address.gsub('#', '@')
-    message.from = "#{key}@#{domain_from_email(address_to)}"
+    message.from = "#{full_address}"
     puts message.to_s
     message.deliver
   end
