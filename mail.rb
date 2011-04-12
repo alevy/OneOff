@@ -35,9 +35,11 @@ if row
   message.deliver
 else
   to_name, key = name_from_email(address_from).split("-")
+  puts [to_name, key].join(",")
   if row = db.get_first_row("select destination from addresses where address = ?", [key])
     message.to = "#{to_name}@#{row[0]}"
     message.from = "#{key}@#{domain_from_email(address_to)}"
+    puts message.to_s
     message.deliver
   end
 end
