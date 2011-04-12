@@ -35,7 +35,7 @@ if row
   message.deliver
 else
   output_address, key = address_to.split("-")
-  puts [to_name, key].join(",")
+  puts [output_address, key].join(",")
   if row = db.get_first_row("select * from addresses where address = ? and destination = ?",
                             [key, address_from])
     message.to = output_address.gsub('#', '@')
