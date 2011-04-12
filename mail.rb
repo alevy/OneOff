@@ -16,7 +16,7 @@ end
 
 message = Mail.new(STDIN.read)
 address_to = message.to.first
-address_to_name = name_from_email(address_tp)
+address_to_name = name_from_email(address_to)
 address_from = message.from.first
 
 db = SQLite3::Database.new(File.join(File.dirname(__FILE__), "addresses.db"))
